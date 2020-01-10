@@ -1,26 +1,44 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Nav from './components/Nav';
+import Counter from './components/Counter';
+import Repos from './components/Repos';
+import TrAddress from './components/TrAddress';
+import TodoApp from './components/TodoApp/TodoApp';
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+export default class App extends Component {
+    toggleHeader = () => {
+        console.log('toggled');
+    };
+    render() {
+        return (
+            <div className="container">
+                <Router>
+                    <Nav />
 
-export default App;
+                    <Switch>
+                        <Route exact path="/counter">
+                            <Counter
+                                handleIncrement={this.handleIncrement}
+                                handleDecrement={this.handleDecrement}
+                                state={this.state}
+                                retrieve={this.retrieve}
+                            />
+                        </Route>
+                        <Route path="/repos">
+                            <Repos />
+                        </Route>
+                        <Route path="/address">
+                            <TrAddress />
+                        </Route>
+                        <Route path="/todoApp">
+                            <TodoApp />
+                        </Route>
+                    </Switch>
+                </Router>
+            </div>
+        );
+    }
+}
