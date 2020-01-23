@@ -7,33 +7,40 @@ export default class Repos extends Component {
         super(props);
         this.state = {
             repos: [],
+            repos2: [],
             selectedRepo: '',
             contributors_url: '',
         };
     }
-
-    async componentDidMount() {
-        await fetch('https://api.github.com/users/HackYourFutureBelgium/repos')
+    componentDidMount() {
+        fetch('https://api.github.com/users/HackYourFutureBelgium/repos')
             .then(response => response.json())
             .then(res =>
                 this.setState({
                     repos: res,
                 }),
             );
+    }
 
+    handleChange = e => {
+        this.setState({ selectedRepo: e.target.value });
         let contributors_url = this.state.repos
             .filter(repo => {
                 return repo.id === Number(this.state.selectedRepo);
             })
             .map(repo => {
                 return repo.contributors_url;
-            })
-            .toString();
-        console.log(contributors_url);
-    }
+            });
+
+        this.setState({
+            contributors_url,
+        });
+        fetch(`${this.state.contributors_url}`)
+            .then(res => res.json())
+            .then(data => this.setState({ repos2: data }));
+    };
 
     render() {
-        console.log(this.state.contributors_url);
         return (
             <div style={{ marginTop: '50px', borderTop: '1px solid red', paddingTop: '10px' }}>
                 <button className="btn-block btn-primary mb-3 font-weight-bold">
@@ -41,11 +48,7 @@ export default class Repos extends Component {
                 </button>
                 {this.state.repos.length > 0 ? (
                     <div>
-                        <select
-                            onChange={e => {
-                                this.setState({ selectedRepo: e.target.value });
-                            }}
-                        >
+                        <select onChange={e => this.handleChange(e)}>
                             {this.state.repos.map(repo => {
                                 return (
                                     <option key={repo.id} value={repo.id}>
@@ -68,6 +71,16 @@ export default class Repos extends Component {
                 ) : (
                     <div>Loading...</div>
                 )}
+                {this.state.repos2.length > 0 &&
+                    this.state.repos2.map(repo => {
+                        return (
+                            <div key={repo.id}>
+                                <img src={repo.avatar_url} alt="avatar" width="100px" />
+                                <p>{repo.login}</p>
+                                <p>{repo.contributions}</p>
+                            </div>
+                        );
+                    })}
             </div>
         );
     }
