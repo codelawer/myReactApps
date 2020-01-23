@@ -28,12 +28,20 @@ export default class TrAddress extends Component {
         });
     }
 
+handleCopy = (e) =>{
+console.log(this.state.fullAddress)
+
+
+
+}
+
+
+
     render() {
         return (
             <div
                 style={{ marginTop: '50px', borderTop: '1px solid red', paddingTop: '10px' }}
-                className="form-row"
-            >
+                className="form-row">
                 <button className="btn-block btn-primary mb-3 font-weight-bold">
                     TR Addresses <FontAwesomeIcon style={{ float: 'right' }} icon={faArrowDown} />
                 </button>
@@ -41,7 +49,11 @@ export default class TrAddress extends Component {
                     <select
                         className="form-control"
                         onChange={e => {
-                            this.setState({ selectedIl: e.target.value });
+                            const selectedCity = this.state.iller.filter(item => item.sehir_key === e.target.value)[0].sehir_title
+                            this.setState({ 
+                                selectedIl: e.target.value,
+                                fullAddress: selectedCity + ' ili '
+                             });
                         }}
                     >
                         {this.state.iller.map(il => {
@@ -62,7 +74,11 @@ export default class TrAddress extends Component {
                         <select
                             className="form-control"
                             onChange={e => {
-                                this.setState({ selectedIlce: e.target.value });
+                                const selectedTown = this.state.ilceler.filter(item => item.ilce_key === e.target.value)[0].ilce_title
+                                this.setState({ 
+                                    selectedIlce: e.target.value,
+                                    fullAddress: this.state.fullAddress + selectedTown + ' ilcesi '
+                                });
                             }}
                         >
                             {this.state.ilceler
@@ -85,7 +101,11 @@ export default class TrAddress extends Component {
                         <select
                             className="form-control"
                             onChange={e => {
-                                this.setState({ selectedMahalle: e.target.value });
+                                const selectedHood = this.state.mahalleler.filter(item => item.mahalle_key === e.target.value)[0].mahalle_title
+                                this.setState({ 
+                                    selectedMahalle: e.target.value,
+                                    fullAddress: this.state.fullAddress + selectedHood + ' mahallesi '
+                                });
                             }}
                         >
                             {this.state.mahalleler
@@ -107,43 +127,15 @@ export default class TrAddress extends Component {
                 </div>
                 {/* result */}
                 <div className="container">
-                    {this.state.selectedMahalle && (
+                    {this.state.selectedIl && (
                         <button
-                            onClick={() => console.log('clicked')}
+                            onClick={() => this.handleCopy()}
                             className="btn btn-primary btn-lg btn-block"
                         >
-                            {this.state.iller
-                                .filter(il => {
-                                    return il.sehir_key === this.state.selectedIl;
-                                })
-                                .map(il => {
-                                    return il.sehir_title + ' ili ';
-                                })
-                                .toString()}
-                            {this.state.ilceler
-                                .filter(ilce => {
-                                    return ilce.ilce_sehirkey === this.state.selectedIl;
-                                })
-                                .filter(ilce => {
-                                    return ilce.ilce_key === this.state.selectedIlce;
-                                })
-                                .map(ilce => {
-                                    return ilce.ilce_title + ' İlçesi ';
-                                })
-                                .toString()}
-                            {this.state.mahalleler
-                                .filter(mahalle => {
-                                    return mahalle.mahalle_ilcekey === this.state.selectedIlce;
-                                })
-                                .filter(mahalle => {
-                                    return mahalle.mahalle_key === this.state.selectedMahalle;
-                                })
-                                .map(mahalle => {
-                                    return mahalle.mahalle_title + ' Mahallesi ';
-                                })
-                                .toString()}
+                            {this.state.fullAddress}
                         </button>
                     )}
+    
                 </div>
             </div>
         );
