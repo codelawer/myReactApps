@@ -20,7 +20,7 @@ export default class Nav extends Component {
                         <Link to="/todoApp">Todo App</Link>
                     </li>
                     <li className="nav-item">
-                        <Link to="/todoRaw">Todo Raw</Link>
+                        <Link to="/calculator">Basic Calculator</Link>
                     </li>
                 </ul>
             </div>
