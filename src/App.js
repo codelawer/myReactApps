@@ -5,6 +5,7 @@ import Counter from './components/Counter';
 import Repos from './components/Repos';
 import TrAddress from './components/TrAddress';
 import TodoApp from './components/TodoApp/TodoApp';
+import Calculator from './components/Calculator';
 
 import './App.css';
 
@@ -35,6 +36,9 @@ export default class App extends Component {
                         </Route>
                         <Route path="/todoApp">
                             <TodoApp />
+                        </Route>
+                        <Route path="/calculator">
+                            <Calculator />
                         </Route>
                     </Switch>
                 </Router>
